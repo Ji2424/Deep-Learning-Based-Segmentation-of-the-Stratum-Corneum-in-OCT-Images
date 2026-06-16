@@ -1,102 +1,85 @@
-# Deep Learning-Based Segmentation of the Stratum Corneum in Ultra-High-Resolution OCT Images
+# Deep-Learning-Based Segmentation of Stratum Corneum in Ultra-High-Resolution OCT Images
 
-Work in Progress – MEng Dissertation Project
+An end-to-end medical image segmentation pipeline developed to automate the delineation of the Stratum Corneum (SC) and adjacent epidermal structures within ultra-high-resolution Optical Coherence Tomography (OCT) scans of living skin.
 
-# Project Overview
+Accurate SC thickness monitoring is an essential biomarker for dermatological clinical diagnostics, assessing cosmetics efficacy, and tracking pharmaceutical transdermal drug delivery. This project implements, tests, and benchmarks three deep architectures to overcome limitations of traditional hand-crafted edge filters against low-contrast tissue boundaries and structural speckle noise.
 
-This dissertation project focuses on developing and comparing deep learning models for automated segmentation of the stratum corneum in ultra-high-resolution Optical Coherence Tomography (OCT) images of living skin.
+---
 
-The stratum corneum is a thin outer barrier layer of the epidermis that is difficult to segment manually due to its small thickness, weak contrast, and inter-individual variability. Manual annotation is slow and inconsistent, motivating the use of data-driven segmentation models.
+## 📊 Project Features & Classes
 
-This project aims to build reliable, reproducible, and interpretable segmentation pipelines using convolutional neural networks.
+The deep learning pipeline maps pixel-level predictions across four mutually exclusive classes:
 
-# Dataset and Labelling
+1. Background  
+2. Skin Surface (SS)  
+3. Stratum Corneum (SC)  
+4. Dermo-Epidermal Junction (DEJ)
 
-Pre-existing ultra-high-resolution OCT B-scan dataset
+### Workflow & Core Preprocessing
 
-Manual labelling performed using OCTLabelTool in MATLAB
+- Label Matching  
+  Images are annotated using `OCTlabelTool` (MATLAB) and mapped using filename-based verification.
 
-Three boundaries annotated:
+- Image Processing  
+  Input scans are resized to a uniform 512 × 512 grid. Contrast Limited Adaptive Histogram Equalisation (CLAHE) is applied to reduce regional optical imbalance, followed by ImageNet normalization.
 
-Skin Surface (SS)
+- Augmentation  
+  Training uses geometric and pixel-level augmentations via the `Albumentations` framework to reduce overfitting on limited clinical data.
 
-Stratum Corneum (SC)
+---
 
-Dermal-Epidermal Junction (DEJ)
+## ⚙️ Repository Setup
 
-Ground truth masks generated for supervised training
+### Architecture Stack
 
-# Models Implemented (Current Stage)
-## U-Net
+- Core Framework: PyTorch  
+- Models: `segmentation-models-pytorch` with ResNet-34 backbone  
+- Image Processing: OpenCV  
 
-Encoder–decoder architecture with skip connections
+---
 
-80/20 train–validation split
+### Local Installation
 
-Learning rate: 0.0001
+```bash
+# Clone repository
+git clone https://github.com/YOUR_USERNAME/oct-skin-segmentation.git
+cd oct-skin-segmentation
 
-Final validation accuracy: 82.48%
+# Install dependencies
+pip install torch torchvision albumentations segmentation-models-pytorch opencv-python matplotlib numpy
+```
 
-Stable convergence with decreasing cross-entropy loss
+---
 
-## DeepLab v3
+## 📈 Benchmarking Results
 
-Atrous convolutions for wider contextual capture
+Models were evaluated on a dataset expanded from 212 image-mask pairs to 1,272 via augmentation, trained on an NVIDIA T4 GPU.
 
-Same 80/20 split and training configuration
+### Overall Performance Summary
 
-Final validation accuracy: 85.99%
+| Architecture   | Mean Pixel Accuracy | Mean IoU | Mean Dice | Global Sensitivity | Global Precision |
+|---------------|---------------------|----------|-----------|--------------------|------------------|
+| DeepLabV3+    | 98.31%              | 0.7929   | 0.8740    | 0.9379             | 0.8259           |
+| U-Net         | 98.66%              | 0.8488   | 0.9136    | 0.9537             | 0.8797           |
+| U-Net++       | 98.99%              | 0.8860   | 0.9372    | 0.9670             | 0.9108           |
 
-Faster early convergence than U-Net
+---
 
-Although DeepLab v3 achieved slightly higher validation accuracy, visual inspection of segmentation outputs suggests U-Net produces smoother and more consistent stratum corneum boundaries. This highlights the importance of qualitative evaluation in thin-layer medical segmentation tasks.
+## 🔍 Key Findings
 
-# Evaluation Metrics
+- U-Net++ achieved the highest performance across all metrics  
+- Dense skip connections and squeeze-and-excitation blocks improved boundary recovery  
+- DeepLabV3+ underperformed on thin structures due to reliance on global context (ASPP) instead of local spatial detail  
 
-Mini-batch accuracy
+---
 
-Validation accuracy
+## 🛠️ Extensions & Planned Enhancements
 
-Cross-entropy loss
+- Transformer Models  
+  Evaluate Vision Transformer hybrids such as TransUNet and Swin-UNet for better global-local feature fusion
 
-Planned: IoU and Dice coefficient (next stage)
+- Thickness Measurement Validation  
+  Convert segmentation masks into physical thickness estimates and compare with clinical ground truth tools
 
-# Current Progress
-
-Completed:
-
-Literature review
-
-Dataset preprocessing and initial labelling
-
-Implementation and training of U-Net and DeepLab v3
-
-Initial quantitative and qualitative evaluation
-
-In Progress:
-
-Improving labelling consistency
-
-Fine-tuning hyperparameters
-
-Computing IoU and Dice metrics
-
-Comparative analysis and ablation studies
-
-# Research Motivation
-
-Existing OCT segmentation studies primarily target broader epidermal layers. Few works specifically evaluate model performance on isolating the stratum corneum, despite its clinical relevance.
-
-This project addresses that gap by directly comparing architectures for thin-layer segmentation in ultra-high-resolution OCT images.
-
-# Ethical Considerations
-
-Uses pre-existing dataset only
-
-No interaction with human participants
-
-Secure data storage following university guidelines
-
-No raw data sharing outside the project
-
-This project remains ongoing and will be updated with further quantitative analysis, hyperparameter optimisation, and extended model comparisons.
+- Multi-Annotator Integration  
+  Introduce inter-observer variability modeling to improve ground truth robustness
