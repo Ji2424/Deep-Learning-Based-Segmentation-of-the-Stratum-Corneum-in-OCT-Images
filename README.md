@@ -42,7 +42,7 @@ The deep learning pipeline maps pixel-level predictions across four mutually exc
 
 ```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/oct-skin-segmentation.git
+git clone https://github.com/Ji2424/oct-skin-segmentation.git
 cd oct-skin-segmentation
 
 # Install dependencies
