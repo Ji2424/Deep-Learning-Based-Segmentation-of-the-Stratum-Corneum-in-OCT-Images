@@ -52,11 +52,9 @@ pip install torch torchvision albumentations segmentation-models-pytorch opencv-
 ---
 
 ## 📈 Benchmarking Results
-
 Models were evaluated on a dataset expanded from 212 image-mask pairs to 1,272 via augmentation, trained on an NVIDIA T4 GPU.
 
 ### Overall Performance Summary
-
 | Architecture   | Mean Pixel Accuracy | Mean IoU | Mean Dice | Global Sensitivity | Global Precision |
 |---------------|---------------------|----------|-----------|--------------------|------------------|
 | DeepLabV3+    | 98.31%              | 0.7929   | 0.8740    | 0.9379             | 0.8259           |
@@ -64,6 +62,27 @@ Models were evaluated on a dataset expanded from 212 image-mask pairs to 1,272 v
 | U-Net++       | 98.99%              | 0.8860   | 0.9372    | 0.9670             | 0.9108           |
 
 ---
+
+### Computational Requirements
+
+Accuracy alone doesn't tell the full story, deployment feasibility matters too. All models were benchmarked for parameter count, GFLOPs, and CPU inference latency (averaged over 100 forward passes):
+
+| Architecture  | Parameters  | GFLOPs | Latency (CPU, ms) |
+|---------------|-------------|--------|--------------------|
+| U-Net         | 24.4M       | 31.51  | 1600.24            |
+| DeepLabV3+    | 26.7M       | 36.93  | 1844.73            |
+| U-Net++       | 26.1M       | 73.91  | 3729.75            |
+
+*Latency measured on CPU; a GPU deployment would be considerably faster in absolute terms, though relative differences between models would hold, U-Net++ requires roughly 2x the inference time of U-Net regardless of hardware.*
+
+**Recommendation:** U-Net++ is the best choice where accuracy is the priority (research, pharmaceutical evaluation). U-Net offers the best accuracy-to-efficiency trade-off for real-time or resource-constrained deployment. DeepLabV3+ is not recommended for this task, its deeper backbone adds computational cost without a corresponding accuracy gain.
+
+---
+
+## 🔍 Key Findings
+- U-Net++ achieved the highest performance across all metrics  
+- Dense skip connections and squeeze-and-excitation blocks improved boundary recovery  
+- DeepLabV3+ underperformed on thin structures due to reliance on global context (ASPP) instead of local spatial detail
 
 ## 🔍 Key Findings
 
