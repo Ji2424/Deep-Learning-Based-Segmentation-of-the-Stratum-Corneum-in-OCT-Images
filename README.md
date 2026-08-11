@@ -37,6 +37,13 @@ The deep learning pipeline maps pixel-level predictions across four mutually exc
 - Image Processing: OpenCV  
 
 ---
+## 📓 Notebooks
+
+| Model | Notebook | Open in Colab |
+|-------|----------|----------------|
+| U-Net | [`u_net.ipynb`](u_net.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Ji2424/Deep-Learning-Based-Segmentation-of-the-Stratum-Corneum-in-OCT-Images/blob/main/u_net.ipynb) |
+| DeepLabV3+ | [`deeplab_correct.ipynb`](deeplab_correct.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Ji2424/Deep-Learning-Based-Segmentation-of-the-Stratum-Corneum-in-OCT-Images/blob/main/deeplab_correct.ipynb) |
+| U-Net++ | [`u_net++.ipynb`](u_net++.ipynb) | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Ji2424/Deep-Learning-Based-Segmentation-of-the-Stratum-Corneum-in-OCT-Images/blob/main/u_net++.ipynb) |
 
 ### Local Installation
 
