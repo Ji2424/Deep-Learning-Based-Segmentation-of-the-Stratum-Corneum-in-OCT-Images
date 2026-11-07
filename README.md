@@ -49,8 +49,8 @@ The deep learning pipeline maps pixel-level predictions across four mutually exc
 
 ```bash
 # Clone repository
-git clone https://github.com/Ji2424/oct-skin-segmentation.git
-cd oct-skin-segmentation
+git clone https://github.com/Ji2424/Deep-Learning-Based-Segmentation-of-the-Stratum-Corneum-in-OCT-Images.git
+cd Deep-Learning-Based-Segmentation-of-the-Stratum-Corneum-in-OCT-Images
 
 # Install dependencies
 pip install torch torchvision albumentations segmentation-models-pytorch opencv-python matplotlib numpy
@@ -80,16 +80,11 @@ Accuracy alone doesn't tell the full story, deployment feasibility matters too. 
 | DeepLabV3+    | 26.7M       | 36.93  | 1844.73            |
 | U-Net++       | 26.1M       | 73.91  | 3729.75            |
 
-*Latency measured on CPU; a GPU deployment would be considerably faster in absolute terms, though relative differences between models would hold, U-Net++ requires roughly 2x the inference time of U-Net regardless of hardware.*
+*Latency was measured on CPU. GPU latency and relative model speed require separate measurements.*
 
 **Recommendation:** U-Net++ is the best choice where accuracy is the priority (research, pharmaceutical evaluation). U-Net offers the best accuracy-to-efficiency trade-off for real-time or resource-constrained deployment. DeepLabV3+ is not recommended for this task, its deeper backbone adds computational cost without a corresponding accuracy gain.
 
 ---
-
-## 🔍 Key Findings
-- U-Net++ achieved the highest performance across all metrics  
-- Dense skip connections and squeeze-and-excitation blocks improved boundary recovery  
-- DeepLabV3+ underperformed on thin structures due to reliance on global context (ASPP) instead of local spatial detail
 
 ## 🔍 Key Findings
 
